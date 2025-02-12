@@ -1,65 +1,98 @@
+
 import java.util.Scanner;
 
-public class EscalasAcordes {
+class EscalasAcordes {
+    static final String[] NOTAS = { "DO", "DO#", "RE", "RE#", "MI", "FA", "FA#", "SOL", "SOL#", "LA", "LA#", "SI" };
+    static final int TONO = 2, SEMITONO = 1, TONOYMEDIO = 3;
+    static final int[][] ESCALAS = 
+    {
+        { TONO, TONO, SEMITONO, TONO, TONO, TONO, SEMITONO },
+        { TONO, SEMITONO, TONO, TONO, SEMITONO, TONO, TONO },
+        { TONO, SEMITONO, TONO, TONO, SEMITONO, TONOYMEDIO, SEMITONO },
+        { TONO, SEMITONO, TONO, TONO, TONO, TONO, SEMITONO },
+        { TONO, TONO, TONOYMEDIO, TONO, TONOYMEDIO },
+        { TONOYMEDIO, TONO, TONO, TONOYMEDIO, TONO },
+        { TONO, SEMITONO, TONO, TONO, TONO, SEMITONO, TONO },
+        { SEMITONO, TONO, TONO, TONO, SEMITONO, TONO, TONO },
+        { TONO, TONO, TONO, SEMITONO, TONO, TONO, SEMITONO },
+        { TONO, TONO, SEMITONO, TONO, TONO, SEMITONO, TONO },
+        { SEMITONO, TONO, TONO, SEMITONO, TONO, TONO, TONO },
+        { TONO, TONO, TONO, TONO, TONO, TONO }
+    };
+
     public static void main(String[] args) {
-
-        String[] acordes = { "Do", "Do#", "Re", "Re#",
-                            "Mi", "Fa", "Fa#", "Sol",
-                            "Sol#", "La", "La#", "Si" };
-
-        int[] intervalos = { 2, 2, 1, 2, 2, 2, 1 };
-
-        Scanner scanner = new Scanner(System.in);
-        int imputUsuario = preguntarNotaUsuario(scanner);
-
-        String notaElegida = acordes[imputUsuario];
-        System.out.println("Ha elegido la nota " + notaElegida);
-
-        String[] escalaMayor = obtenerEscalaMayor(acordes, intervalos, imputUsuario);
-        mostrarEscalaMayor(acordes, escalaMayor);
-
-        String[] acordeMayor = obtenerAcordeMayor(acordes, imputUsuario);
-        mostrarAcordeMayor(notaElegida, acordeMayor);
+        String nota = preguntarNota();
+        int[] escalaElegida = preguntarEscala();
+        String[] escalaGenerada = construirEscala(nota, escalaElegida);
+        String[] acorde = construirAcorde(escalaGenerada);
+        
+        System.out.println("Escala en " + nota + ":");
+        mostrarSecuencia(escalaGenerada);
+        System.out.println("Acorde:");
+        mostrarSecuencia(acorde);
     }
 
-    private static int preguntarNotaUsuario(Scanner scanner) {
-        System.out.println("Ingrese una nota a trabajar: 0: Do, 1: Do#, 2: Re, 3: Re#, 4: Mi, ...");
-        return scanner.nextInt();
-    }
-
-    private static String[] obtenerEscalaMayor(String[] acordes, int[] intervalos, int imputUsuario) {
-        String[] escalaMayor = new String[8];
-        int indice = imputUsuario;
-        for (int i = 0; i < 7; i++) {
-            escalaMayor[i] = acordes[indice];
-            indice = (indice + intervalos[i]) % 12;
-        }
-        escalaMayor[7] = escalaMayor[0];
-        return escalaMayor;
-    }
-
-    private static void mostrarEscalaMayor(String[] notaElegida, String[] escalaMayor) {
-        System.out.print("La escala de " + notaElegida + " Mayor es: ");
-        for (String nota : escalaMayor) {
-            System.out.print("[" + nota + "] / ");
+    static void mostrarSecuencia(String[] secuenciaNotas) {
+        for (String nota : secuenciaNotas) {
+            System.out.print("[" + nota + "] ");
         }
         System.out.println();
     }
 
-    public static String[] obtenerAcordeMayor(String[] acordes, int imputUsuario) {
-        return new String[] 
-        {
-                acordes[imputUsuario],
-                acordes[(imputUsuario + 4) % 12],
-                acordes[(imputUsuario + 7) % 12]
-        };
+    static String[] construirAcorde(String[] escala) {
+        // Validamos que la escala tenga suficientes notas para formar el acorde
+        if (escala.length < 3) {
+            return new String[] { escala[0] }; // Si no hay suficientes notas, devolvemos solo la tónica
+        }
+        if (escala.length < 5) {
+            return new String[] { escala[0], escala[2] }; // Si hay al menos 3 notas, devolvemos la tónica y la tercera
+        }
+        return new String[] { escala[0], escala[2], escala[4] }; // Acorde completo (tónica, tercera y quinta)
     }
 
-    private static void mostrarAcordeMayor(String notaElegida, String[] acordeMayor) {
-        System.out.print("El acorde de " + notaElegida + " Mayor está conformado por: ");
-        for (String nota : acordeMayor) {
-            System.out.print("[" + nota + "] / ");
+    static String[] construirEscala(String nota, int[] intervalos) {
+        int posicionEnNotas = obtenerIndiceNota(nota);
+        String[] escala = new String[intervalos.length + 1]; // Se agrega la tónica
+
+        for (int i = 0; i < escala.length; i++) {
+            escala[i] = NOTAS[posicionEnNotas];
+            if (i < intervalos.length) {
+                posicionEnNotas = (posicionEnNotas + intervalos[i]) % NOTAS.length;
+            }
         }
-        System.out.println();
+        return escala;
+    }
+
+    static int obtenerIndiceNota(String nota) {
+        for (int i = 0; i < NOTAS.length; i++) {
+            if (nota.equals(NOTAS[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    static String preguntarNota() {
+        System.out.println("Elige Nota -> 1: Do, 2: Do#, 3: Re ...");
+        int nota = new Scanner(System.in).nextInt();
+        return NOTAS[nota - 1];
+    }
+
+    static int[] preguntarEscala() {
+        System.out.println("Elige Escala:");
+        System.out.println("1: Mayor");
+        System.out.println("2: Menor natural");
+        System.out.println("3: Menor armónica");
+        System.out.println("4: Menor melódica");
+        System.out.println("5: Pentatónica mayor");
+        System.out.println("6: Pentatónica menor");
+        System.out.println("7: Dórica");
+        System.out.println("8: Frigia");
+        System.out.println("9: Lidia");
+        System.out.println("10: Mixolidia");
+        System.out.println("11: Locria");
+        System.out.println("12: Por tonos");
+        int escala = new Scanner(System.in).nextInt();
+        return ESCALAS[escala - 1];
     }
 }
