@@ -39,20 +39,20 @@ class EscalasAcordes {
         System.out.println();
     }
 
-    static String[] construirAcorde(String[] escala) {
-        // Validamos que la escala tenga suficientes notas para formar el acorde
+    static String[] construirAcorde(String[] escala) 
+    {
         if (escala.length < 3) {
-            return new String[] { escala[0] }; // Si no hay suficientes notas, devolvemos solo la tónica
+            return new String[] { escala[0] }; 
         }
         if (escala.length < 5) {
-            return new String[] { escala[0], escala[2] }; // Si hay al menos 3 notas, devolvemos la tónica y la tercera
+            return new String[] { escala[0], escala[2] }; 
         }
-        return new String[] { escala[0], escala[2], escala[4] }; // Acorde completo (tónica, tercera y quinta)
+        return new String[] { escala[0], escala[2], escala[4] }; 
     }
 
     static String[] construirEscala(String nota, int[] intervalos) {
         int posicionEnNotas = obtenerIndiceNota(nota);
-        String[] escala = new String[intervalos.length + 1]; // Se agrega la tónica
+        String[] escala = new String[intervalos.length + 1]; 
 
         for (int i = 0; i < escala.length; i++) {
             escala[i] = NOTAS[posicionEnNotas];
