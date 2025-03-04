@@ -5,11 +5,14 @@ class CalculadoraPOO {
     private int posicionActual;
     private boolean error;
     private String mensajeError;
-
-    
+    static final private int CAPACIDAD_POR_DEFECTO = 10;
 
     public CalculadoraPOO(){
-        numeros = new double[10];
+        this(CAPACIDAD_POR_DEFECTO);
+    }
+
+    public CalculadoraPOO(int capacidad){
+        numeros = new double[capacidad];
         posicionActual = 0;
         error = false;
         mensajeError = "";
@@ -29,8 +32,10 @@ class CalculadoraPOO {
     public String mostrar() {
         if (error) {
             return mensajeError;
-        } else {
+        } else if(posicionActual > 0) {
             return "" + numeros[posicionActual-1];
+        }else{
+            return "-----";
         }
     }
 
@@ -39,7 +44,8 @@ class CalculadoraPOO {
         for(int i=0;i<posicionActual; i++){
             resultado = resultado + numeros[i] + "\n";
         }
-        return resultado;
+        return error?mensajeError:resultado;
+
     }
 
     public void limpiar() {
@@ -50,25 +56,72 @@ class CalculadoraPOO {
     }
 
     public void sumar() {
-        if (posicionActual>=2) {
-            double resultado = numeros[posicionActual-1] + numeros[posicionActual-2];
-            numeros[posicionActual-2] = resultado;
-            posicionActual = posicionActual - 1;
-        } else {
-            error = true;
-            mensajeError = "Faltan operandos!";
+        if (verficarOperandos(2)) {
+            double[] operandos = extraerOperadores(2);
+            ingresarNumero(operandos[0] + operandos[1]);
         }
     }
 
     public void restar() {
-        if (posicionActual>=2) {
-            double resultado = numeros[posicionActual-1] - numeros[posicionActual-2];
-            numeros[posicionActual-2] = resultado;
+        invertir();
+        sumar();     
+      }
+
+    public void dividir(){
+        if (verficarOperandos(2)) {
+            double[] operandos = extraerOperadores(2);
+            ingresarNumero(operandos[1] / operandos[0]);
+        }
+    }
+
+    public void multiplicar(){
+        if (verficarOperandos(2)) {
+            double[] operandos = extraerOperadores(2);
+            for(int i=0; i<operandos[0]-1; i++){
+                ingresarNumero(operandos[i]);
+            }
+            calcularSumatoria();
+        }
+    }
+
+    public void calcularSumatoria(){
+        int numeroOperandos = posicionActual;
+        for(int i = 0; i < numeroOperandos-1; i++){
+            sumar();
+        }
+    }
+
+    private double[] extraerOperadores(int numeroOperandos){
+        double[] operandos = new double[numeroOperandos];
+        for(int i = 0; i < numeroOperandos; i++)
+        {
             posicionActual = posicionActual - 1;
-        } else {
+            operandos[1] = numeros[posicionActual]
+        }
+        return operandos;
+    }
+
+    private boolean verficarOperandos(int numeroOperandos){
+        if (posicionActual >= numeroOperandos) {
+            return true;
+        }else {
             error = true;
             mensajeError = "Faltan operandos!";
-        }        
+            return false;
+        }
+    }
 
+    public void invertir(){
+        if (verficarOperandos(1)) {
+            double[] operando = extraerOperadores(1);
+            ingresarNumero((operando[0] - (operando[0] + operando[0])));
+        }
+    }
+
+    public void calcurarMedia(){
+        int numeroDeOperandos = posicionActual;
+        calcularSumatoria();
+        ingresarNumero(numeroDeOperandos);
+        dividir();
     }
 }

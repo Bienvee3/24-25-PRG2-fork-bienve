@@ -1,7 +1,7 @@
 public class AppCalculadoraPOO {
     public static void main(String[] args) {
         
-        CalculadoraPOO calculadora = new CalculadoraPOO();
+        CalculadoraPOO calculadora = new CalculadoraPOO(5);
 
         calculadora.ingresarNumero(1);System.out.println(calculadora.mostrar());
         calculadora.ingresarNumero(2);System.out.println(calculadora.mostrar());
