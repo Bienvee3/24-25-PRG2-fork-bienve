@@ -96,7 +96,7 @@ class CalculadoraPOO {
         for(int i = 0; i < numeroOperandos; i++)
         {
             posicionActual = posicionActual - 1;
-            operandos[1] = numeros[posicionActual]
+            operandos[1] = numeros[posicionActual];
         }
         return operandos;
     }
