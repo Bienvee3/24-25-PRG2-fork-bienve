@@ -48,15 +48,15 @@ import java.util.Scanner;
 public class JuegoInterno 
 {
 	Scanner entrada = new Scanner(System.in);
-	private int victoriasX = 0;                         //Variable para las victorias de X
-	private int victoriasO = 0;                         //Variable para las victorias de O
+	private int victoriasX = 0;                                                                 //Variable para las victorias de X
+	private int victoriasO = 0;                                                                 //Variable para las victorias de O
 	public int tirada = 0;
-    public boolean volverajugar = true;                 // Variable para controlar si se juega otra partida
-    public boolean ganador;                             //Variable para controlar si hay un ganador en la partida
-    public boolean fichacolocada = false;               //Variable para controlar si se ha colocado la ficha en el tablero
-    private String respuesta;                           //Variable para la respuesta del usuario
-    private String ganadorjuego = "";                   //Variable para almacenar el ganador de cada juego
-    private String[] tablero = {"_", "_", "_", "_", "_", "_", "_", "_", "_"};               // Tablero vacío
+    public boolean volverajugar = true;                                                         // Variable para controlar si se juega otra partida
+    public boolean ganador;                                                                     //Variable para controlar si hay un ganador en la partida
+    public boolean fichacolocada = false;                                                       //Variable para controlar si se ha colocado la ficha en el tablero
+    private String respuesta;                                                                   //Variable para la respuesta del usuario
+    private String ganadorjuego = "";                                                           //Variable para almacenar el ganador de cada juego
+    private String[] tablero = {"_", "_", "_", "_", "_", "_", "_", "_", "_"};                   // Tablero vacío
     private String ficha;
 
     
