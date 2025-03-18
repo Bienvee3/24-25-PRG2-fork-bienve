@@ -1,4 +1,4 @@
-package entregas.doaltoBienvenido.EscalasAcordes;
+package doaltoBienvenido.EscalasAcordes;
 
 import java.util.Scanner;
 

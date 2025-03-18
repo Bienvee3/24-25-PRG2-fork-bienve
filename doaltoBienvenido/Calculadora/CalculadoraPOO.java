@@ -1,4 +1,4 @@
-package entregas.doaltoBienvenido.Calculadora;
+package doaltoBienvenido.Calculadora;
 
 class CalculadoraPOO {
 
