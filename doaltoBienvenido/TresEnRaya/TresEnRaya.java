@@ -1,11 +1,21 @@
 package doaltoBienvenido.TresEnRaya;
 
 public class TresEnRaya {
-    Tablero tablero = new Tablero();
-    Turno turno = new Turno();
+
+    private Tablero tablero;
+    private Jugador[] jugadores;
+    private Turno turno;
+
+    public TresEnRaya() {
+        tablero = new Tablero();
+        jugadores = new Jugador[2];
+        jugadores[0] = new Jugador('x');
+        jugadores[1] = new Jugador('o');
+        turno = new Turno();
+    }
 
     public void jugar() {
-        do{
+        do {
             tablero.mostrar();
             if (!tablero.estaCompleto(jugadores[turno.leToca()])) {
                 jugadores[turno.leToca()].ponerFicha(tablero);
