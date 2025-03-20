@@ -2,13 +2,14 @@ package doaltoBienvenido.TresEnRaya;
 
 public class Tablero {
     private char[][] casillas;
+    private char casillaVacia = '_';
 
     public Tablero() {
         casillas = new char[3][3];
 
         for (int i = 0; i < casillas.length; i++) {
             for (int j = 0; j < casillas[i].length; j++) {
-                casillas[i][j] = '_';
+                casillas[i][j] = casillaVacia;
             }
         }
     }
@@ -24,7 +25,9 @@ public class Tablero {
     }
 
     private void cleanScreen() {
-
+        for (int i = 0; i < 100; i++) {
+            System.out.println();
+        }
     }
 
     public boolean hayTresEnRaya() {
@@ -32,25 +35,30 @@ public class Tablero {
     }
 
     private boolean hayTresEnRaya(char color) {
-        int[] filas = new int[3];
-        int[] columnas = new int[3];
-        int diagonalPrincipal = 0;
-        int diagonalSecundaria = 0;
-        for (int i = 0; i < casillas.length; i++) {
-            for (int j = 0; j < casillas[i].length; j++) {
-                if (color == casillas[i][j]) {
-                    filas[i]++;
-                    columnas[j]++;
-                    diagonalPrincipal = diagonalPrincipal + ((i == j) ? 1 : 0);
-                    diagonalSecundaria = diagonalSecundaria + ((i + j == 2) ? 1 : 0);
-
-                    if (filas[i] == 3 || columnas[j] == 3 || diagonalPrincipal == 3 || diagonalSecundaria == 3) {
-                        return true;
-                    }
-
-                }
+        for (int i = 0; i < 3; i++) {
+            if (casillas[i][0] == color && casillas[i][1] == color && casillas[i][2] == color
+                && casillas[i][0] != casillaVacia) {
+                return true;
             }
         }
+
+        for (int j = 0; j < 3; j++) {
+            if (casillas[0][j] == color && casillas[1][j] == color && casillas[2][j] == color
+                && casillas[0][j] != casillaVacia) {
+                return true;
+            }
+        }
+
+        if (casillas[0][0] == color && casillas[1][1] == color && casillas[2][2] == color
+            && casillas[0][0] != casillaVacia) {
+            return true;
+        }
+
+        if (casillas[0][2] == color && casillas[1][1] == color && casillas[2][0] == color
+            && casillas[0][2] != casillaVacia) {
+            return true;
+        }
+
         return false;
     }
 
@@ -67,19 +75,21 @@ public class Tablero {
     }
 
     public boolean estaOcupado(Coordenada coordenada) {
-        
+        return casillas[coordenada.fila()][coordenada.columna()] != casillaVacia;
     }
 
     public void ponerFicha(Coordenada coordenada, char color) {
-        
+        if (!estaOcupado(coordenada)) {
+            casillas[coordenada.fila()][coordenada.columna()] = color;
+        }
     }
 
     public void sacarFicha(Coordenada coordenada) {
-        
+        casillas[coordenada.fila()][coordenada.columna()] = casillaVacia;
     }
 
     public boolean estaVacio(Coordenada coordenada) {
-        
+        return casillas[coordenada.fila()][coordenada.columna()] == casillaVacia;
     }
 
 }
